@@ -1,0 +1,98 @@
+﻿@model List<ProductSystem.Models.ProductViewModel>
+
+@{
+	ViewData["Title"] = "Product Details";
+	var successMessage = TempData["successMessage"]?.ToString();
+	var errorMessage = TempData["errorMessage"]?.ToString();
+}
+<h3>@ViewData["Title"]</h3>
+<hr />
+@if (!string.IsNullOrWhiteSpace(successMessage))
+{ 
+<div class="alert alert-success">
+	<strong> Success..</strong>@successMessage
+		<button type="button" class="btn-close float-end" data-bs-dismiss="alert"></button>
+
+</div>
+}
+else if (!string.IsNullOrWhiteSpace(errorMessage))
+{
+<div class="alert alert-danger">
+		<strong> Error..</strong>@errorMessage
+		<button type="button" class="btn-close float-end" data-bs-dismiss="alert"></button>
+
+</div>
+}
+<form>
+	<button asp-action="Create" asp-controller="Product" class="btn btn-primary mb-3">Create Product</button>
+	<table class="table table-responsive table-hover table-bordered">
+		<thead>
+			<tr class="table-active">
+				<th>Product Id</th>
+				<th>Product Name</th>
+				<th>Category Id</th>
+				<th>Category Name</th>
+
+			</tr>
+		</thead>
+		<tbody>
+			@if (Model != null && Model.Any())
+			{
+				foreach (var product in Model)
+				{ 
+				<tr>
+					<td>@product.ProductId</td>
+					<td>@product.ProductName</td>
+					<td>@product.CategoryId</td>
+					<td>@product.CategoryName</td>
+					@* <td> *@
+					@* 	<div class="btn-group btn-group-sm "> *@
+					@* 			<a asp-controller="Product" asp-action="Edit" asp-route-id="@product.ProductId" class="btn btn-primary">Edit</a> *@
+
+					@* 	</div> *@
+					@* 		<div class="btn-group btn-group-sm "> *@
+					@* 			<a asp-controller="Product" asp-action="Delete" asp-route-id="@product.ProductId" class="btn btn-danger">Delete</a> *@
+
+					@* 		</div> *@
+					@* </td> *@
+				</tr>
+				}
+			}
+			else
+			{ 
+				<tr>
+					<td colspan="4">
+						<div>
+							No Product available at this moment..!
+						</div>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</form>
+<div class="d-flex justify-content-between">
+	<div>
+		@if (ViewBag.CurrentPage > 1)
+		{
+			<a class="btn btn-secondary" asp-action="Index" asp-route-pageNumber="@(ViewBag.CurrentPage - 1)" asp-route-pageSize="5">Previous</a>
+		}
+	</div>
+	<div>
+		<span>Page @ViewBag.CurrentPage of @ViewBag.TotalPages</span>
+	</div>
+	<div>
+		@if (ViewBag.CurrentPage < ViewBag.TotalPages)
+		{
+			<a class="btn btn-secondary" asp-action="Index" asp-route-pageNumber="@(ViewBag.CurrentPage + 1)" asp-route-pageSize="5">Next</a>
+		}
+	</div>
+</div>
+
+
+
+
+
+
+
+

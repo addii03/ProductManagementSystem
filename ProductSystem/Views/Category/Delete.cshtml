@@ -1,0 +1,31 @@
+﻿@model ProductSystem.Models.CategoryViewModel
+
+@{
+	ViewData["Title"] = "Delete Category";
+	var errorMessage = TempData["errorMessage"]?.ToString();
+}
+<h3>@ViewData["Title"]</h3>
+<hr />
+@if (!string.IsNullOrWhiteSpace(errorMessage))
+{
+	<div class="alert alert-danger">
+		<strong> Success..</strong>@errorMessage
+		<button type="button" class="btn-close float-end" data-bs-dismiss="alert"></button>
+
+	</div>
+}
+<form action="Delete" method="post">
+	<div class="mb-3">
+		<label class="form-label">Id</label>
+		<input type="text" class="form-control" asp-for="CategoryId" readonly />
+	</div>
+	<div class="mb-3"></div>
+	<label class="form-label"> Category Name</label>
+	<input type="text" class="form-control" asp-for="CategoryName" readonly />
+	<div class="mb-3"></div>
+	<label class="form-label"> Category Description</label>
+	<input type="text" class="form-control" asp-for="CategoryDescription" readonly />
+	<div class="d-grid">
+		<button type="submit" class="btn btn-danger">Delete</button>
+	</div>
+</form>

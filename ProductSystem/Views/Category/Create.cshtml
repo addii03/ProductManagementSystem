@@ -1,0 +1,47 @@
+﻿@model ProductSystem.Models.CategoryViewModel
+
+@{
+	ViewData["Title"] = "Create Category";
+	var errorMessage = TempData["errorMessage"]?.ToString();
+}
+<h3>@ViewData["Title"]</h3>
+<hr />
+@if (!string.IsNullOrWhiteSpace(errorMessage))
+{
+	<div class="alert alert-danger">
+		<strong> Error..</strong>@errorMessage
+		<button type="button" class="btn-close float-end" data-bs-dismiss="alert"></button>
+
+	</div>
+}
+<form action="Create" method="post">
+	@* <div class="mb-3"> *@
+	@* 	<label class="form-label">Id</label> *@
+	@* 	<input type="text" class="form-control" asp-for="Id" /> *@
+	@* 	<span asp-validation-for="Id" class="text-danger"></span> *@
+	@* </div> *@
+	<div class="mb-3">
+		<label class="form-label">Category Name</label>
+		<input type="text" class="form-control" asp-for="CategoryName" />
+		<span asp-validation-for="CategoryName" class="text-danger"></span>
+	</div>
+	<div class="mb-3">
+		<label class="form-label">Category Description</label>
+		<input type="text" class="form-control" asp-for="CategoryDescription" />
+		<span asp-validation-for="CategoryDescription" class="text-danger"></span>
+	</div>
+	<div class="d-grid">
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</div>
+
+
+
+</form>
+
+
+
+
+
+
+
+
