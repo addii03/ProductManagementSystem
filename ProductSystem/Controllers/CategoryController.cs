@@ -11,28 +11,65 @@ namespace ProductSystem.Controllers
         {
             this._context = context;
         }
+        //[HttpGet]
+        //public IActionResult Index()
+        //{
+        //    var category = _context.Categories.ToList();
+        //    List<CategoryViewModel> categoryList = new List<CategoryViewModel>();
+
+        //    if (category != null)
+
+        //    {
+        //        foreach (var category1 in category)
+        //        {
+        //            var CategoryViewModel = new CategoryViewModel()
+        //            {
+        //                CategoryId = category1.CategoryId,
+        //                CategoryName = category1.CategoryName,
+        //                CategoryDescription = category1.CategoryDescription,
+
+        //            };
+        //            categoryList.Add(CategoryViewModel);
+        //        }
+        //        return View(categoryList);
+        //    }
+        //    return View(categoryList);
+        //}
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(int pageNumber = 1, int pageSize = 5)
         {
-            var category = _context.Categories.ToList();
+           
+            var skip = (pageNumber - 1) * pageSize;
+
+           
+            var categories = _context.Categories
+                                     .Skip(skip)
+                                     .Take(pageSize)
+                                     .ToList();
+
             List<CategoryViewModel> categoryList = new List<CategoryViewModel>();
 
-            if (category != null)
-
+            if (categories != null)
             {
-                foreach (var category1 in category)
+                foreach (var category in categories)
                 {
-                    var CategoryViewModel = new CategoryViewModel()
+                    var categoryViewModel = new CategoryViewModel()
                     {
-                        CategoryId = category1.CategoryId,
-                        CategoryName = category1.CategoryName,
-                        CategoryDescription = category1.CategoryDescription,
-
+                        CategoryId = category.CategoryId,
+                        CategoryName = category.CategoryName,
+                        CategoryDescription = category.CategoryDescription
                     };
-                    categoryList.Add(CategoryViewModel);
+                    categoryList.Add(categoryViewModel);
                 }
-                return View(categoryList);
             }
+
+          
+            var totalCategories = _context.Categories.Count();
+            var totalPages = (int)Math.Ceiling((double)totalCategories / pageSize);
+
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.TotalPages = totalPages;
+
             return View(categoryList);
         }
 
@@ -64,8 +101,8 @@ namespace ProductSystem.Controllers
                     _context.Categories.Add(category);
                     _context.SaveChanges();
                     TempData["successMessage"] = "Category Created Successfully";
-                    return RedirectToAction("Create", "Product");
-
+                    //  return RedirectToAction("Create", "Product");
+                    return RedirectToAction("Index");
 
                 }
                 else

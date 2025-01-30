@@ -23,8 +23,13 @@ else if (!string.IsNullOrWhiteSpace(errorMessage))
 
 </div>
 }
+<div class="d-flex justify-content-between mb-3">
+	<a asp-action="Create" asp-controller="Product" class="btn btn-primary">Create Product</a>
+	<a asp-action="Create" asp-controller="Category" class="btn btn-primary">Create Category</a>
+</div>
+
 <form>
-	<button asp-action="Create" asp-controller="Product" class="btn btn-primary mb-3">Create Product</button>
+	
 	<table class="table table-responsive table-hover table-bordered">
 		<thead>
 			<tr class="table-active">
@@ -32,6 +37,7 @@ else if (!string.IsNullOrWhiteSpace(errorMessage))
 				<th>Product Name</th>
 				<th>Category Id</th>
 				<th>Category Name</th>
+				<th>Action</th>
 
 			</tr>
 		</thead>
@@ -45,16 +51,16 @@ else if (!string.IsNullOrWhiteSpace(errorMessage))
 					<td>@product.ProductName</td>
 					<td>@product.CategoryId</td>
 					<td>@product.CategoryName</td>
-					@* <td> *@
-					@* 	<div class="btn-group btn-group-sm "> *@
-					@* 			<a asp-controller="Product" asp-action="Edit" asp-route-id="@product.ProductId" class="btn btn-primary">Edit</a> *@
+					<td> 
+					 	<div class="btn-group btn-group-sm "> 
+					 			<a asp-controller="Product" asp-action="Edit" asp-route-id="@product.ProductId" class="btn btn-primary">Edit</a>
 
-					@* 	</div> *@
-					@* 		<div class="btn-group btn-group-sm "> *@
-					@* 			<a asp-controller="Product" asp-action="Delete" asp-route-id="@product.ProductId" class="btn btn-danger">Delete</a> *@
+						</div> 
+					 		<div class="btn-group btn-group-sm "> 
+								<a asp-controller="Product" asp-action="Delete" asp-route-id="@product.ProductId" class="btn btn-danger">Delete</a> 
 
-					@* 		</div> *@
-					@* </td> *@
+					 		</div> 
+					 </td>
 				</tr>
 				}
 			}

@@ -108,7 +108,7 @@ namespace ProductSystem.Controllers
             }
         }
         [HttpPost]
-        public IActionResult Edit(ProductViewModel model)
+        public IActionResult Edit(ProductEditModel model)
         {
             try
             {
@@ -118,7 +118,8 @@ namespace ProductSystem.Controllers
                     {
                         ProductId = model.ProductId,
                         ProductName = model.ProductName,
-                        ProductDescription = model.ProductDescription
+                        ProductDescription = model.ProductDescription,
+                        CategoryId = model.CategoryId
                     };
                     _context.Products.Update(product);
                     _context.SaveChanges();
@@ -147,11 +148,12 @@ namespace ProductSystem.Controllers
                 var product = _context.Products.SingleOrDefault(p => p.ProductId == Id);
                 if (product != null)
                 {
-                    var productView = new ProductViewModel()
+                    var productView = new ProductEditModel()
                     {
                         ProductId = Id,
                         ProductName = product.ProductName,
-                        ProductDescription = product.ProductDescription
+                        ProductDescription = product.ProductDescription,
+                        CategoryId = product.CategoryId
                     };
                     return View(productView);
                 }

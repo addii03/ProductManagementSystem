@@ -23,8 +23,10 @@ else if (!string.IsNullOrWhiteSpace(errorMessage))
 
 	</div>
 }
+<a asp-action="Index" asp-controller="Product" class="btn btn-primary mb-3">Product List</a>
+
 <form>
-	<button asp-action="Create" asp-controller="Category" class="btn btn-primary mb-3">Create Category</button>
+	@* <button asp-action="Create" asp-controller="Category" class="btn btn-primary mb-3">Create Category</button> *@
 	<table class="table table-responsive table-hover table-bordered">
 		<thead>
 			<tr class="table-active">
@@ -70,6 +72,23 @@ else if (!string.IsNullOrWhiteSpace(errorMessage))
 		</tbody>
 	</table>
 </form>
+<div class="d-flex justify-content-between">
+<div>
+	@if (ViewBag.CurrentPage > 1)
+	{
+		<a class="btn btn-secondary" asp-action="Index" asp-route-pageNumber="@(ViewBag.CurrentPage - 1)" asp-route-pageSize="5">Previous</a>
+	}
+</div>
+<div>
+	<span>Page @ViewBag.CurrentPage of @ViewBag.TotalPages</span>
+</div>
+<div>
+	@if (ViewBag.CurrentPage < ViewBag.TotalPages)
+	{
+		<a class="btn btn-secondary" asp-action="Index" asp-route-pageNumber="@(ViewBag.CurrentPage + 1)" asp-route-pageSize="5">Next</a>
+	}
+</div>
+</div>
 
 
 
