@@ -24,6 +24,9 @@ namespace ProductSystem.DAL
             .HasIndex(c => c.CategoryName)
             .IsUnique();
 
+            modelBuilder.Entity<Product>()
+           .HasIndex(p => p.ProductName)
+           .IsUnique();
             base.OnModelCreating(modelBuilder);
         }
 

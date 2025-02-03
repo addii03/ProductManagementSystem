@@ -63,6 +63,50 @@ namespace ProductSystem.Controllers
             ViewData["CategoryId"] = new SelectList(categories, "CategoryId", "CategoryName");
             return View();
         }
+        //[HttpPost]
+        //public IActionResult Create(ProductModel productData)
+        //{
+        //    try
+        //    {
+        //        if (ModelState.IsValid)
+        //        {
+
+        //            Product product = new Product();
+
+        //            product.ProductName = productData.ProductName;
+        //            product.ProductDescription = productData.ProductDescription;
+        //            product.CategoryId = productData.CategoryId;             
+
+
+        //            _context.Products.Add(product);
+        //            _context.SaveChanges();
+        //            TempData["successMessage"] = "Product Created Successfully";
+        //            return RedirectToAction("Index");
+
+        //        }
+        //        else
+        //        {
+        //            foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+        //            {
+        //                Console.WriteLine($"Error: {error.ErrorMessage}");
+        //            }
+        //            TempData["errorMessage"] = "Model data is not valid";
+        //           // ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", producyData.CategoryId);
+        //            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", productData.CategoryId);
+
+        //            return View(productData);
+        //        }
+
+        //    }
+        //    catch (Exception e)
+        //    {
+
+        //        TempData["errorMessage"] = e.Message;
+        //        ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", productData.CategoryId);
+
+        //        return View();
+        //    }
+        //}
         [HttpPost]
         public IActionResult Create(ProductModel productData)
         {
@@ -70,43 +114,44 @@ namespace ProductSystem.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    // Check if the product already exists
+                    bool isProductExists = _context.Products
+                                              .Any(p => p.ProductName == productData.ProductName);
+                    if (isProductExists)
+                    {
+                        TempData["errorMessage"] = "Product name already exists. Please enter a unique name.";
+                        ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", productData.CategoryId);
+                        return View(productData);
+                    }
 
-                    Product product = new Product();
+                    Product product = new Product
+                    {
+                        ProductName = productData.ProductName,
+                        ProductDescription = productData.ProductDescription,
+                        CategoryId = productData.CategoryId
+                    };
 
-                    product.ProductName = productData.ProductName;
-                    product.ProductDescription = productData.ProductDescription;
-                    product.CategoryId = productData.CategoryId;             
-                        
-                  
                     _context.Products.Add(product);
                     _context.SaveChanges();
+
                     TempData["successMessage"] = "Product Created Successfully";
                     return RedirectToAction("Index");
-
                 }
                 else
                 {
-                    foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-                    {
-                        Console.WriteLine($"Error: {error.ErrorMessage}");
-                    }
                     TempData["errorMessage"] = "Model data is not valid";
-                   // ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", producyData.CategoryId);
                     ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", productData.CategoryId);
-
                     return View(productData);
                 }
-
             }
             catch (Exception e)
             {
-
                 TempData["errorMessage"] = e.Message;
                 ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", productData.CategoryId);
-
-                return View();
+                return View(productData);
             }
         }
+
         [HttpPost]
         public IActionResult Edit(ProductEditModel model)
         {
